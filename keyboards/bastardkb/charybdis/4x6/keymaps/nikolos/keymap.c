@@ -1,13 +1,12 @@
 /*
  * Nikolos's Ultimate Charybdis Layout
  * Author: nikolos
- * Last Updated: 2025-06-25
+ * Last Updated: 2025-06-26
  *
  * This layout includes:
  * - QWERTY and phonetic Russian base layers.
- * - A custom one-press language switching key (Alt+Shift).
+ * - A custom one-press language switching key (sends F13 for OS binding).
  * - Integrated trackball functions with auto-layer switching.
- * - Vial/VIA support.
  */
 #include QMK_KEYBOARD_H
 
@@ -21,7 +20,7 @@
 // ===================================================================================
 
 enum charybdis_keymap_layers {
-    LAYER_BASE = 0, // Переименовано для совместимости с документацией
+    LAYER_BASE = 0,
     LAYER_RUSSIAN,
     LAYER_LOWER,
     LAYER_RAISE,
@@ -87,12 +86,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
 
   [LAYER_POINTER] = LAYOUT(
-       QK_BOOT,  EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,  EE_CLR,
-       XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD,    S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-       XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,    XXXXXXX, KC_RSFT, KC_RCTL, KC_RALT, KC_RGUI, XXXXXXX,
-       XXXXXXX, _______, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, _______, XXXXXXX,
-                                  KC_BTN2, KC_BTN1, KC_BTN3,    KC_BTN3, KC_BTN1,
-                                           XXXXXXX, KC_BTN2,    KC_BTN2
+    QK_BOOT,  EE_CLR, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, QK_BOOT,  EE_CLR,
+    XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, DPI_MOD, S_D_MOD,    S_D_MOD, DPI_MOD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+    // Добавляем скроллинг на HJKL, как стрелки в Vim
+    XXXXXXX, KC_LGUI, KC_LALT, KC_LCTL, KC_LSFT, XXXXXXX,    KC_WH_L, KC_WH_D, KC_WH_U, KC_WH_R, KC_RGUI, XXXXXXX,
+    XXXXXXX, _______, DRGSCRL, SNIPING, XXXXXXX, XXXXXXX,    XXXXXXX, XXXXXXX, SNIPING, DRGSCRL, _______, XXXXXXX,
+                               KC_BTN2, KC_BTN1, KC_BTN3,    KC_BTN3, KC_BTN1,
+                                        XXXXXXX, KC_BTN2,    KC_BTN2
   )
 };
 
@@ -104,8 +104,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     switch (keycode) {
         case SWITCH_LANG:
-        // Эта команда отправляет Win+Пробел
+        // Отправляем комбинацию Win+Пробел
         tap_code16(LGUI(KC_SPC));
+        // По-прежнему переключаем внутренний слой клавиатуры
         layer_invert(LAYER_RUSSIAN);
         return false;
       // Логика для русских букв
