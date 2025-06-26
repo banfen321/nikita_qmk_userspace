@@ -103,8 +103,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   if (record->event.pressed) {
     switch (keycode) {
-      case SWITCH_LANG:
-        tap_code16(LALT(KC_LSFT));
+        case SWITCH_LANG:
+        // Эта команда отправляет Win+Пробел
+        tap_code16(LGUI(KC_SPC));
         layer_invert(LAYER_RUSSIAN);
         return false;
       // Логика для русских букв
