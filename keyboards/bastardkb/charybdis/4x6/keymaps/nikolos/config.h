@@ -1,3 +1,4 @@
+#define EE_HANDS
 #pragma once
 
 /*
@@ -26,3 +27,4 @@
 
 // Указываем, что на слое POINTER должен автоматически включаться режим "снайпера" (пониженное DPI)
 #define CHARYBDIS_AUTO_SNIPING_ON_LAYER LAYER_POINTER
+
