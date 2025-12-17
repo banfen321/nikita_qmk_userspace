@@ -101,51 +101,59 @@
     // ===================================================================================
 
     bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch (keycode) {
-            case SWITCH_LANG:
-            // Отправляем комбинацию Win+Пробел
-            tap_code16(LGUI(KC_SPC));
-            // По-прежнему переключаем внутренний слой клавиатуры
-            layer_invert(LAYER_RUSSIAN);
-            return false;
-        // Логика для русских букв
-        case MY_RU_J: tap_code(KC_Q); return false;
-        case MY_RU_C: tap_code(KC_W); return false;
-        case MY_RU_U: tap_code(KC_E); return false;
-        case MY_RU_K: tap_code(KC_R); return false;
-        case MY_RU_E: tap_code(KC_T); return false;
-        case MY_RU_N: tap_code(KC_Y); return false;
-        case MY_RU_G: tap_code(KC_U); return false;
-        case MY_RU_SH: tap_code(KC_I); return false;
-        case MY_RU_SC: tap_code(KC_O); return false;
-        case MY_RU_Z: tap_code(KC_P); return false;
-        case MY_RU_H: tap_code(KC_LBRC); return false;
-        case MY_RU_SOLIDUS: tap_code(KC_RBRC); return false;
-        case MY_RU_F: tap_code(KC_A); return false;
-        case MY_RU_Y: tap_code(KC_S); return false;
-        case MY_RU_W: tap_code(KC_D); return false;
-        case MY_RU_A: tap_code(KC_F); return false;
-        case MY_RU_P: tap_code(KC_G); return false;
-        case MY_RU_R: tap_code(KC_H); return false;
-        case MY_RU_O: tap_code(KC_J); return false;
-        case MY_RU_L: tap_code(KC_K); return false;
-        case MY_RU_D: tap_code(KC_L); return false;
-        case MY_RU_ZH: tap_code(KC_SCLN); return false;
-        case MY_RU_JE: tap_code(KC_QUOT); return false;
-        case MY_RU_JA: tap_code(KC_Z); return false;
-        case MY_RU_CH: tap_code(KC_X); return false;
-        case MY_RU_S: tap_code(KC_C); return false;
-        case MY_RU_M: tap_code(KC_V); return false;
-        case MY_RU_I: tap_code(KC_B); return false;
-        case MY_RU_T: tap_code(KC_N); return false;
-        case MY_RU_SF: tap_code(KC_M); return false;
-        case MY_RU_B: tap_code(KC_COMM); return false;
-        case MY_RU_JU: tap_code(KC_DOT); return false;
-        case MY_RU_DOT: tap_code(KC_SLSH); return false;
+        if (record->event.pressed) {
+            switch (keycode) {
+
+                case SWITCH_LANG:
+                    // === ЛОГИКА СИНХРОНИЗАЦИИ ===
+                    // Если зажат Shift (левый или правый)
+                    if (get_mods() & MOD_BIT(KC_LSFT) || get_mods() & MOD_BIT(KC_RSFT)) {
+                        // РЕЖИМ ЛЕЧЕНИЯ: Меняем только слой клавиатуры (без Win+Space)
+                        layer_invert(LAYER_RUSSIAN);
+                    } else {
+                        // ОБЫЧНЫЙ РЕЖИМ: Шлем Win+Space и меняем слой
+                        tap_code16(LGUI(KC_SPC));
+                        layer_invert(LAYER_RUSSIAN);
+                    }
+                    return false;
+
+                // Логика для русских букв
+                case MY_RU_J: tap_code(KC_Q); return false;
+                case MY_RU_C: tap_code(KC_W); return false;
+                case MY_RU_U: tap_code(KC_E); return false;
+                case MY_RU_K: tap_code(KC_R); return false;
+                case MY_RU_E: tap_code(KC_T); return false;
+                case MY_RU_N: tap_code(KC_Y); return false;
+                case MY_RU_G: tap_code(KC_U); return false;
+                case MY_RU_SH: tap_code(KC_I); return false;
+                case MY_RU_SC: tap_code(KC_O); return false;
+                case MY_RU_Z: tap_code(KC_P); return false;
+                case MY_RU_H: tap_code(KC_LBRC); return false;
+                case MY_RU_SOLIDUS: tap_code(KC_RBRC); return false;
+                case MY_RU_F: tap_code(KC_A); return false;
+                case MY_RU_Y: tap_code(KC_S); return false;
+                case MY_RU_W: tap_code(KC_D); return false;
+                case MY_RU_A: tap_code(KC_F); return false;
+                case MY_RU_P: tap_code(KC_G); return false;
+                case MY_RU_R: tap_code(KC_H); return false;
+                case MY_RU_O: tap_code(KC_J); return false;
+                case MY_RU_L: tap_code(KC_K); return false;
+                case MY_RU_D: tap_code(KC_L); return false;
+                case MY_RU_ZH: tap_code(KC_SCLN); return false;
+                case MY_RU_JE: tap_code(KC_QUOT); return false;
+                case MY_RU_JA: tap_code(KC_Z); return false;
+                case MY_RU_CH: tap_code(KC_X); return false;
+                case MY_RU_S: tap_code(KC_C); return false;
+                case MY_RU_M: tap_code(KC_V); return false;
+                case MY_RU_I: tap_code(KC_B); return false;
+                case MY_RU_T: tap_code(KC_N); return false;
+                case MY_RU_SF: tap_code(KC_M); return false;
+                case MY_RU_B: tap_code(KC_COMM); return false;
+                case MY_RU_JU: tap_code(KC_DOT); return false;
+                case MY_RU_DOT: tap_code(KC_SLSH); return false;
+            }
         }
-    }
-    return true;
+        return true;
     }
 
     // --- "Родные" функции для трекбола ---
